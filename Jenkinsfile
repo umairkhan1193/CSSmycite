@@ -38,7 +38,7 @@ pipeline {
                                         docker pull umair9988/cvwebsite:${env.BUILD_ID}
                                         docker stop cvwebsite-container || true
                                         docker rm cvwebsite-container || true
-                                        docker run -d --name cvwebsite-container -p 80:80 umair9988/cvwebsite:${env.BUILD_ID}
+                                        docker run -d --name cvwebsite-container -p 80:2000 umair9988/cvwebsite:${env.BUILD_ID}
                                     """
                                 )]
                             )
@@ -46,7 +46,7 @@ pipeline {
                     )
 
                     // Check if deployment is successful
-                    boolean isDeploymentSuccessful = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://34.203.236.17:80', returnStdout: true).trim() == '200'
+                    boolean isDeploymentSuccessful = sh(script: 'curl -s -o /dev/null -w "%{http_code}" http://54.145.135.167:2000', returnStdout: true).trim() == '200'
 
                     if (!isDeploymentSuccessful) {
                         // Rollback to the previous version
@@ -60,7 +60,7 @@ pipeline {
                                             docker pull umair9988/cvwebsite:${previousSuccessfulTag}
                                             docker stop cvwebsite-container || true
                                             docker rm cvwebsite-container || true
-                                            docker run -d --name cvwebsite-container -p 80:80 umair9988/cvwebsite:${previousSuccessfulTag}
+                                            docker run -d --name cvwebsite-container -p 80:2000 umair9988/cvwebsite:${previousSuccessfulTag}
                                         """
                                     )]
                                 )
